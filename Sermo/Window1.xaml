@@ -1,0 +1,48 @@
+﻿<Window x:Class="Sermo.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Sermo"
+    Title="Window1" Height="300" Width="300">
+    <Window.Resources>
+        <local:PercentConverter x:Key="converter"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition  Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ItemsControl Name="Canvas">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate >
+                  
+                        <Canvas IsItemsHost="True"  />
+                
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type local:Seat}">
+                   
+                    <Border BorderBrush="Black" BorderThickness="1" >
+                        <Border.RenderTransform>
+                            <TransformGroup>
+                                <TranslateTransform X="{Binding TableLeft}" Y="{Binding TableTop}"/>
+                                <ScaleTransform  ScaleX="{Binding ElementName=Canvas,Path=ActualWidth, Converter={StaticResource converter}}" ScaleY="{Binding ElementName=Canvas,Path=ActualHeight, Converter={StaticResource converter}}"/>
+                            </TransformGroup>
+                        </Border.RenderTransform>
+                        <Rectangle Height="{Binding TableHeight}" Width="{Binding TableWidth}"  Fill="Yellow" Name="rect" Tag="{Binding}"  MouseDown="rect_MouseDown" >
+                      
+                        </Rectangle>
+                    </Border>
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Selected}" Value="True">
+                            <Setter TargetName="rect"  Property="Fill" Value="Red">
+
+                            </Setter>
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <Label Content="{Binding ElementName=Canvas,Path=ActualHeight, Converter={StaticResource converter}}" Grid.Row="1"/>
+    </Grid>
+</Window>
