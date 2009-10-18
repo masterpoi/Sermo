@@ -11,38 +11,74 @@
             <RowDefinition />
             <RowDefinition  Height="Auto"/>
         </Grid.RowDefinitions>
-        <ItemsControl Name="Canvas">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate >
-                  
-                        <Canvas IsItemsHost="True"  />
-                
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type local:Seat}">
-                   
-                    <Border BorderBrush="Black" BorderThickness="1" >
-                        <Border.RenderTransform>
-                            <TransformGroup>
-                                <TranslateTransform X="{Binding TableLeft}" Y="{Binding TableTop}"/>
-                                <ScaleTransform  ScaleX="{Binding ElementName=Canvas,Path=ActualWidth, Converter={StaticResource converter}}" ScaleY="{Binding ElementName=Canvas,Path=ActualHeight, Converter={StaticResource converter}}"/>
-                            </TransformGroup>
-                        </Border.RenderTransform>
-                        <Rectangle Height="{Binding TableHeight}" Width="{Binding TableWidth}"  Fill="Yellow" Name="rect" Tag="{Binding}"  MouseDown="rect_MouseDown" >
-                      
-                        </Rectangle>
-                    </Border>
-                    <DataTemplate.Triggers>
-                        <DataTrigger Binding="{Binding Selected}" Value="True">
-                            <Setter TargetName="rect"  Property="Fill" Value="Red">
+        <Canvas Background="White" Name="HolderCanvas">
+            <Grid Width="{Binding ElementName=HolderCanvas, Path=ActualWidth}" Height="{Binding ElementName=HolderCanvas, Path=ActualHeight}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.5*"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <ItemsControl Grid.Column="1" Grid.Row="1" Background="Transparent" BorderBrush="White" BorderThickness="0" Name="NamesListBox" HorizontalAlignment="Center">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid  Background="{Binding Brush}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock HorizontalAlignment="Center">
+                            <TextBlock Text="{Binding FirstName}" FontSize="72" />
+                            <TextBlock Text=" " FontSize="72" />
+                            <TextBlock Text="{Binding LastName}" FontSize="72" />
+                                    </TextBlock>
+                                <TextBlock Grid.Row="1" Text="{Binding Company}" FontSize="36" HorizontalAlignment="Center" ></TextBlock>
+                                <TextBlock Grid.Row="2" Text="{Binding Function}" FontSize="36"  HorizontalAlignment="Center"></TextBlock>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+            <ItemsControl Name="Canvas" Width="{Binding ElementName=HolderCanvas, Path=ActualWidth}" Height="{Binding ElementName=HolderCanvas, Path=ActualHeight}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate >
 
-                            </Setter>
-                        </DataTrigger>
-                    </DataTemplate.Triggers>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        <Label Content="{Binding ElementName=Canvas,Path=ActualHeight, Converter={StaticResource converter}}" Grid.Row="1"/>
+                        <Canvas IsItemsHost="True"  />
+
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type local:Seat}">
+
+                        <Border BorderBrush="Black" BorderThickness="1" >
+                            <Border.RenderTransform>
+                                <TransformGroup>
+                                    <TranslateTransform X="{Binding TableLeft}" Y="{Binding TableTop}"/>
+                                    <ScaleTransform  ScaleX="{Binding ElementName=Canvas,Path=ActualWidth, Converter={StaticResource converter}}" ScaleY="{Binding ElementName=Canvas,Path=ActualHeight, Converter={StaticResource converter}}"/>
+                                </TransformGroup>
+                            </Border.RenderTransform>
+                            <Rectangle Height="{Binding TableHeight}" Width="{Binding TableWidth}" Fill="WhiteSmoke" Name="rect" Tag="{Binding}"  MouseDown="rect_MouseDown" >
+
+                            </Rectangle>
+                        </Border>
+                        <DataTemplate.Triggers>
+                            <DataTrigger Binding="{Binding State}" Value="Talking">
+                                <Setter TargetName="rect"  Property="Fill" Value="{Binding Brush}">
+
+                                </Setter>
+                            </DataTrigger>
+                        </DataTemplate.Triggers>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Canvas>
+        <Label Name="Status"  Grid.Row="1"/>
     </Grid>
+
 </Window>

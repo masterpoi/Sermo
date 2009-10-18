@@ -1,11 +1,15 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Runtime.Serialization;
+using System.Windows.Media;
 
 namespace Sermo
 {
+    [DataContract]
     public class Seat : INotifyPropertyChanged
     {
         private string _FirstName;
+        [DataMember]
         public string FirstName
         {
             get
@@ -19,6 +23,7 @@ namespace Sermo
             }
         }
         private string _LastName;
+        [DataMember]
         public string LastName
         {
             get
@@ -32,8 +37,41 @@ namespace Sermo
             }
         }
 
-        private bool _Selected;
-        public bool Selected
+        [DataMember]
+        public string Function { get; set; }
+        [DataMember]
+        public string Company { get; set; }
+
+        private Color? _Color;
+        public Color? Color
+        {
+            get
+            {
+                return _Color;
+            }
+            set
+            {
+                _Color = value;
+                RaisePropertyChanged("Color");
+                RaisePropertyChanged("Brush");
+            }
+        }
+
+        public Brush Brush
+        {
+            get
+            {
+                if (!Color.HasValue)
+                    return new SolidColorBrush(Colors.Transparent);
+                return new SolidColorBrush(Color.Value);
+            }
+        }
+            
+
+
+        private SeatState _Selected = SeatState.Sitting;
+        [DataMember]
+        public SeatState State
         {
             get
             {
@@ -42,13 +80,18 @@ namespace Sermo
             set
             {
                 _Selected = value;
-                RaisePropertyChanged("Selected");
+                if (value == SeatState.Sitting)
+                    Color = null;
+                RaisePropertyChanged("State");
             }
         }
-
+        [DataMember]
         public float TableTop { get; set; }
+        [DataMember]
         public float TableLeft { get; set; }
+        [DataMember]
         public float TableWidth { get; set; }
+        [DataMember]
         public float TableHeight { get; set; }
 
         #region INotifyPropertyChanged Members

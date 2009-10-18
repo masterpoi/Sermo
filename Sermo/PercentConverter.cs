@@ -23,7 +23,7 @@ namespace Sermo
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return ((double)value) / 100.0;
+            return ((double)value) / 1000.0;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
